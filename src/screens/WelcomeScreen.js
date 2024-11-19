@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   widthPercentageToDP as wp,
@@ -13,7 +13,7 @@ export default function WelcomeScreen() {
   const ring2padding = useSharedValue(0);
   const navigation = useNavigation();
 
-  useEffect(() => {
+  const startAnimation = useCallback(() => {
     try {
       // Reset values
       ring1padding.value = 0;
@@ -44,13 +44,16 @@ export default function WelcomeScreen() {
       console.error("Welcome Screen Error:", error);
       navigation.replace('Home');
     }
-  }, []);
+  }, [navigation, ring1padding, ring2padding]);
+
+  useEffect(() => {
+    startAnimation();
+  }, [startAnimation]);
 
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
 
-      {/* Animated rings */}
       <Animated.View
         style={[styles.ring, { padding: ring2padding }]}
       >
@@ -64,7 +67,6 @@ export default function WelcomeScreen() {
         </Animated.View>
       </Animated.View>
 
-      {/* Title section */}
       <View style={styles.textContainer}>
         <Text style={styles.title}>Foodie</Text>
         <Text style={styles.subtitle}>your food recipe app</Text>
@@ -78,12 +80,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FBBF24", // Warm amber color
+    backgroundColor: "#FBBF24",
   },
   ring: {
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     borderRadius: 9999,
-    padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
