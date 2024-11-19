@@ -16,104 +16,139 @@ import {
 
 export default function FavoriteScreen() {
   const navigation = useNavigation();
-
-  // Assuming you have a similar structure for recipes in your Redux store
-  const favoriteRecipes = useSelector((state) => state.favorites);
-  const favoriteRecipesList = favoriteRecipes?.favoriterecipes || [];
-  console.log(favoriteRecipes.favoriterecipes);
-  console.log('favoriteRecipesList',favoriteRecipesList);
+  const favoriteRecipes = useSelector((state) => state.favorites.favoriterecipes);
   
-  
+  console.log('Favorite Recipes:', favoriteRecipes); // Debug log
 
-  if (favoriteRecipesList.length === 0) {
+  if (!favoriteRecipes || favoriteRecipes.length === 0) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyText}>No favorite recipes yet!</Text>
-        {/* add back button */}
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={{
-            backgroundColor: "#2563EB",
-            padding: 10,
-            borderRadius: 5,
-            marginTop: 10,
-            width: 100,
-            alignItems: "center ",
-          }}
+          style={styles.goBackButton}
         >
-          <Text style={{ color: "#fff" }}>Go back</Text>
+          <Text style={styles.goBackButtonText}>Go back</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
-  return (
-    <>
-      {/* Heading */}
-      <View testID="FavoriteRecipes">
-        <Text
-          style={{ fontSize: hp(3.8), marginTop: hp(4), marginLeft: 20 }}
-          className="font-semibold text-neutral-600"
-        >
-          My Favorite Recipes
+  const renderRecipeItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.cardContainer}
+      onPress={() => navigation.navigate('RecipeDetail', item)}
+    >
+      <Image
+        source={{ uri: item.recipeImage || item.image }}
+        style={styles.recipeImage}
+      />
+      <View style={styles.textContainer}>
+        <Text style={styles.recipeTitle} numberOfLines={1}>
+          {item.recipeName || item.title}
+        </Text>
+        <Text style={styles.recipeDescription} numberOfLines={2}>
+          {item.cookingDescription || item.instructions}
         </Text>
       </View>
-    
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={{
-          backgroundColor: "#2563EB",
-          padding: 10,
-          borderRadius: 5,
-          marginTop: 10,
-          width: 100,
-          alignItems: "center",
-          marginLeft: 20,
-        }}
-      >
-        <Text style={{ color: "#fff" }}>Go back</Text>
-      </TouchableOpacity>
-    
-    </>
+    </TouchableOpacity>
+  );
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>My Favorite Recipes</Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.goBackButton}
+        >
+          <Text style={styles.goBackButtonText}>Go back</Text>
+        </TouchableOpacity>
+      </View>
+
+      <FlatList
+        data={favoriteRecipes}
+        renderItem={renderRecipeItem}
+        keyExtractor={(item) => item.idFood || item.id}
+        contentContainerStyle={styles.listContainer}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F9FAFB",
+    padding: wp(4),
+  },
+  header: {
+    marginBottom: hp(3),
+  },
+  headerText: {
+    fontSize: hp(3),
+    fontWeight: "bold",
+    color: "#1F2937",
+    marginBottom: hp(2),
+  },
   emptyContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#F9FAFB",
   },
   emptyText: {
-    fontSize: hp(2.5),
-    color: "#6B7280", // text-neutral-600
+    fontSize: hp(2),
+    color: "#6B7280",
+    marginBottom: hp(2),
   },
-  listContentContainer: {
-    paddingHorizontal: wp(4),
-    paddingVertical: hp(2),
+  goBackButton: {
+    backgroundColor: "#2563EB",
+    paddingHorizontal: wp(6),
+    paddingVertical: hp(1.5),
+    borderRadius: 8,
+  },
+  goBackButtonText: {
+    color: "#FFFFFF",
+    fontWeight: "600",
+    fontSize: hp(1.8),
+  },
+  listContainer: {
+    paddingBottom: hp(4),
   },
   cardContainer: {
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
     marginBottom: hp(2),
-    padding: wp(4),
-    borderRadius: 10,
-    elevation: 3, // For Android shadow
-    shadowColor: "#000", // For iOS shadow
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    overflow: "hidden",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
     flexDirection: "row",
-    alignItems: "center",
   },
   recipeImage: {
-    width: wp(20),
-    height: wp(20),
-    borderRadius: 10,
-    marginRight: wp(4),
+    width: wp(30),
+    height: wp(30),
+  },
+  textContainer: {
+    flex: 1,
+    padding: wp(4),
+    justifyContent: "center",
   },
   recipeTitle: {
     fontSize: hp(2),
-    fontWeight: "bold",
-    color: "#4B5563", // text-neutral-700
+    fontWeight: "600",
+    color: "#1F2937",
+    marginBottom: hp(1),
+  },
+  recipeDescription: {
+    fontSize: hp(1.6),
+    color: "#6B7280",
   },
 });

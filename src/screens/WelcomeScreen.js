@@ -11,29 +11,46 @@ import { useNavigation } from "@react-navigation/native";
 export default function WelcomeScreen() {
   const ring1padding = useSharedValue(0);
   const ring2padding = useSharedValue(0);
-
   const navigation = useNavigation();
 
   useEffect(() => {
-    ring1padding.value = 0;
-    ring2padding.value = 0;
-    setTimeout(
-      () => (ring1padding.value = withSpring(ring1padding.value + hp(5))),
-      100
-    );
-    setTimeout(
-      () => (ring2padding.value = withSpring(ring2padding.value + hp(5.5))),
-      300
-    );
+    try {
+      // Reset values
+      ring1padding.value = 0;
+      ring2padding.value = 0;
+      
+      // Start animations
+      setTimeout(() => {
+        ring1padding.value = withSpring(ring1padding.value + hp(5), {
+          damping: 15,
+          stiffness: 90,
+        });
+      }, 100);
+      
+      setTimeout(() => {
+        ring2padding.value = withSpring(ring2padding.value + hp(5.5), {
+          damping: 15,
+          stiffness: 90,
+        });
+      }, 300);
 
-    setTimeout(() => navigation.navigate("Home"), 2500);
+      // Navigate after animation
+      const timer = setTimeout(() => {
+        navigation.replace('Home');
+      }, 2500);
+
+      return () => clearTimeout(timer);
+    } catch (error) {
+      console.error("Welcome Screen Error:", error);
+      navigation.replace('Home');
+    }
   }, []);
 
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
 
-      {/* logo image with rings */}
+      {/* Animated rings */}
       <Animated.View
         style={[styles.ring, { padding: ring2padding }]}
       >
@@ -41,13 +58,13 @@ export default function WelcomeScreen() {
           style={[styles.ring, { padding: ring1padding }]}
         >
           <Image
-            source={{uri:'https://cdn.pixabay.com/photo/2024/08/29/02/47/italian-9005494_1280.png'}}
+            source={{ uri: 'https://cdn.pixabay.com/photo/2017/06/21/22/42/recipe-2428926_1280.png' }}
             style={styles.logo}
           />
         </Animated.View>
       </Animated.View>
 
-      {/* title and punchline */}
+      {/* Title section */}
       <View style={styles.textContainer}>
         <Text style={styles.title}>Foodie</Text>
         <Text style={styles.subtitle}>your food recipe app</Text>
@@ -61,30 +78,39 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FBBF24", // amber-500
+    backgroundColor: "#FBBF24", // Warm amber color
   },
   ring: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)", // white/20
-    borderRadius: 9999, // full rounded
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    borderRadius: 9999,
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   logo: {
     width: hp(20),
     height: hp(20),
+    borderRadius: hp(10),
   },
   textContainer: {
     alignItems: "center",
-    marginTop: hp(2),
+    marginTop: hp(4),
   },
   title: {
     fontSize: hp(7),
     fontWeight: "bold",
-    color: "#FFFFFF", // white
-    letterSpacing: 3, // tracking-widest
+    color: "#FFFFFF",
+    letterSpacing: 3,
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   subtitle: {
     fontSize: hp(2),
     fontWeight: "500",
-    color: "#FFFFFF", // white
-    letterSpacing: 3, // tracking-widest
+    color: "#FFFFFF",
+    letterSpacing: 3,
+    opacity: 0.8,
+    marginTop: hp(1),
   },
 });

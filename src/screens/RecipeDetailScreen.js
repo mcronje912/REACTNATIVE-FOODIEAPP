@@ -1,310 +1,213 @@
-import {View,Text,ScrollView,TouchableOpacity,Image,StyleSheet,} from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { useNavigation } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux"; // Redux hooks
-import { toggleFavorite } from "../redux/favoritesSlice"; // Redux action
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../redux/favoritesSlice";
 
-export default function RecipeDetailScreen(props) {
-  const recipe = props.route.params; // recipe passed from previous screen
-
-  const dispatch = useDispatch();
-  const favoriterecipes = useSelector(
-    (state) => state.favorites.favoriterecipes
-  );
-  const isFavourite = favoriterecipes?.some(
-    (favrecipe) => favrecipe.idFood === recipe.idFood
-  ); // Check by idrecipe
-
+export default function RecipeDetailScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const route = useRoute();
+  
+  // Get recipe data from navigation params
+  const recipe = route.params;
+  
+  // Check if recipe is in favorites
+  const favoriteRecipes = useSelector((state) => state.favorites.favoriterecipes);
+  const isFavorite = favoriteRecipes.some(item => item.idFood === recipe.idFood);
 
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite(recipe)); // Dispatch the recipe to favorites
+    dispatch(toggleFavorite(recipe));
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContent}
-    >
-      {/* recipe Image */}
-      <View style={styles.imageContainer} testID="imageContainer">
-     
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {/* Recipe Image */}
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: recipe.recipeImage }}
+          style={styles.recipeImage}
+        />
       </View>
 
-      {/* Back Button and Favorite Button */}
-      <View style={styles.topButtonsContainer}>
+      {/* Buttons Container */}
+      <View style={styles.buttonsContainer}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={styles.backButton}
+          style={styles.button}
         >
-          <Text>Back</Text>
+          <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleToggleFavorite}
-          style={[
-            styles.favoriteButton,
-            {
-              backgroundColor: "white",
-            },
-          ]}
+          style={styles.favoriteButton}
         >
-          <Text>{isFavourite ? "♥" : "♡"}</Text>
+          <Text style={styles.favoriteButtonText}>
+            {isFavorite ? "♥" : "♡"}
+          </Text>
         </TouchableOpacity>
       </View>
 
-      {/* recipe Description */}
-  
-        <View style={styles.contentContainer}>
-          {/* Title and Category */}
-          <View
-            style={styles.recipeDetailsContainer}
-            testID="recipeDetailsContainer"
-          >
-            <Text style={styles.recipeTitle} testID="recipeTitle">
-         
-              
-              </Text>
-            <Text style={styles.recipeCategory} testID="recipeCategory">
-              </Text>
+      {/* Recipe Details */}
+      <View style={styles.detailsContainer}>
+        <Text style={styles.title}>{recipe.recipeName}</Text>
+        <Text style={styles.category}>{recipe.recipeCategory}</Text>
+
+        {/* Recipe Info */}
+        <View style={styles.infoContainer}>
+          <View style={styles.infoItem}>
+            <Text style={styles.infoLabel}>Origin:</Text>
+            <Text style={styles.infoText}>{recipe.recipeOrigin}</Text>
           </View>
-          <View style={styles.miscContainer} testID="miscContainer">
-        
-      </View>
-
-      {/* Ingredients */}
-      <View style={styles.sectionContainer}>
-     
-      </View>
-
-      {/* Instructions */}
-      <View style={styles.sectionContainer} testID="sectionContainer">
-        
+          <View style={styles.infoItem}>
+            <Text style={styles.infoLabel}>Type:</Text>
+            <Text style={styles.infoText}>{recipe.recipeTags}</Text>
+          </View>
         </View>
-          {/* Description */}
-         
+
+        {/* Ingredients */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Ingredients</Text>
+          {recipe.ingredients?.map((ingredient, index) => (
+            <View key={index} style={styles.ingredientItem}>
+              <Text style={styles.ingredientText}>• {ingredient.ingredientName}: {ingredient.measure}</Text>
+            </View>
+          ))}
         </View>
+
+        {/* Instructions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Instructions</Text>
+          <Text style={styles.instructionsText}>{recipe.recipeInstructions}</Text>
+        </View>
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 30,
+    backgroundColor: "#FFFFFF",
   },
   imageContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
+    width: '100%',
+    height: hp(40),
   },
   recipeImage: {
-    width: wp(98),
-    height: hp(40),
-    borderRadius: 20,
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-    marginTop: 4,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
-  topButtonsContainer: {
-    width: "100%",
-    position: "absolute",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingTop: hp(4),
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: wp(4),
+    paddingVertical: hp(2),
+    position: 'absolute',
+    top: hp(2),
+    width: '100%',
   },
-  backButton: {
-    padding: 8,
-    borderRadius: 50,
-    marginLeft: wp(5),
-    backgroundColor: "white",
+  button: {
+    backgroundColor: 'white',
+    padding: wp(3),
+    borderRadius: wp(2),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  buttonText: {
+    fontWeight: '600',
+    color: '#374151',
   },
   favoriteButton: {
-    padding: 8,
-    borderRadius: 50,
-    borderWidth: 1,
-    marginRight: wp(5),
+    backgroundColor: 'white',
+    padding: wp(3),
+    borderRadius: wp(2),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-
-  contentContainer: {
-    paddingHorizontal: wp(4),
-    paddingTop: hp(4),
+  favoriteButtonText: {
+    fontSize: hp(2.5),
+    color: '#EF4444',
   },
-  recipeDetailsContainer: {
-    marginBottom: hp(2),
+  detailsContainer: {
+    padding: wp(4),
   },
-  recipeTitle: {
+  title: {
     fontSize: hp(3),
-    fontWeight: "bold",
-    color: "#4B5563", // text-neutral-700
+    fontWeight: 'bold',
+    color: '#374151',
+    marginBottom: hp(1),
   },
-  recipeCategory: {
+  category: {
     fontSize: hp(2),
-    fontWeight: "500",
-    color: "#9CA3AF", // text-neutral-500
-  },
-  sectionContainer: {
+    color: '#6B7280',
     marginBottom: hp(2),
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: hp(3),
+    backgroundColor: '#F3F4F6',
+    padding: wp(4),
+    borderRadius: wp(2),
+  },
+  infoItem: {
+    alignItems: 'center',
+  },
+  infoLabel: {
+    fontSize: hp(1.8),
+    color: '#6B7280',
+    marginBottom: hp(0.5),
+  },
+  infoText: {
+    fontSize: hp(1.8),
+    fontWeight: '600',
+    color: '#374151',
+  },
+  section: {
+    marginBottom: hp(3),
   },
   sectionTitle: {
     fontSize: hp(2.5),
-    fontWeight: "bold",
-    color: "#4B5563", // text-neutral-700
-  },
-  descriptionText: {
-    fontSize: hp(1.8),
-    color: "#4B5563", // text-neutral-700
-    textAlign: "justify",
-    lineHeight: hp(2.5),
-  },
-  container: {
-    backgroundColor: "white",
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 30,
-  },
-  imageContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: 20,
-  },
-  recipeImage: {
-    width: wp(98),
-    height: hp(45),
-    borderRadius: 20,
-    marginTop: 4,
-  },
-  topButtonsContainer: {
-    width: "100%",
-    position: "absolute",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingTop: hp(4),
-  },
-  backButton: {
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: "#f0f0f0",
-    marginLeft: wp(5),
-  },
-  backButtonText: {
-    fontSize: hp(2),
-    color: "#333",
-    fontWeight: "bold",
-  },
-  favoriteButton: {
-    padding: 10,
-    borderRadius: 20,
-    marginRight: wp(5),
-  },
-  favoriteButtonText: {
-    fontSize: hp(2),
-    color: "red",
-  },
-  mealName: {
-    fontSize: hp(4),
-    fontWeight: "bold",
-    color: "#333",
-    textAlign: "center",
-    marginVertical: 10,
-    fontFamily: "Roboto",
-  },
-  mealCategory: {
-    fontSize: hp(2),
-    color: "#666",
-    textAlign: "center",
-    marginBottom: 20,
-    fontFamily: "Roboto",
-  },
-  miscContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginBottom: 20,
-    paddingHorizontal: wp(4),
-  },
-  miscItem: {
-    alignItems: "center",
-    backgroundColor: "#F5F5F5",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 10,
-    elevation: 3,
-  },
-  miscIcon: {
-    fontSize: hp(3.5),
-    marginBottom: 5,
-  },
-  miscText: {
-    fontSize: hp(2),
-    fontWeight: "600",
-    fontFamily: "Lato",
-  },
-  sectionContainer: {
-    marginHorizontal: wp(5),
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: hp(2.8),
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 10,
-    fontFamily: "Lato",
-  },
-  ingredientsList: {
-    marginLeft: wp(4),
+    fontWeight: 'bold',
+    color: '#374151',
+    marginBottom: hp(2),
   },
   ingredientItem: {
-    flexDirection: "row",
-    alignItems: "center",
     marginBottom: hp(1),
-    padding: 10,
-    backgroundColor: "#FFF9E1",
-    borderRadius: 8,
-    elevation: 2,
-  },
-  ingredientBullet: {
-    backgroundColor: "#FFD700",
-    borderRadius: 50,
-    height: hp(1.5),
-    width: hp(1.5),
-    marginRight: wp(2),
   },
   ingredientText: {
-    fontSize: hp(1.9),
-    color: "#333",
-    fontFamily: "Lato",
+    fontSize: hp(1.8),
+    color: '#4B5563',
   },
   instructionsText: {
-    fontSize: hp(2),
-    color: "#444",
-    lineHeight: hp(3),
-    textAlign: "justify",
-    fontFamily: "Lato",
-  },
-  videoLink: {
-    fontSize: hp(2.2),
-    color: "#1E90FF",
-    textDecorationLine: "underline",
-    marginTop: 10,
-    fontFamily: "Roboto",
-  },
-  notFoundContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  notFoundText: {
-    fontSize: hp(3),
-    fontWeight: "bold",
-    color: "#D9534F",
+    fontSize: hp(1.8),
+    color: '#4B5563',
+    lineHeight: hp(2.8),
   },
 });

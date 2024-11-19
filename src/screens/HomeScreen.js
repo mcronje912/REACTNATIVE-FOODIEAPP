@@ -1,4 +1,3 @@
-
 import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
@@ -12,88 +11,82 @@ import FoodItems from "../components/recipes";
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("Chicken");
 
-  // Hardcoded categories for news
-  const [categories, setCategories] = useState([
+  // Hardcoded categories for recipe
+  const [categories] = useState([
     {
       idCategory: "1",
       strCategory: "Beef",
       strCategoryThumb: "https://www.themealdb.com/images/category/beef.png",
-      
-      },
+    },
     {
       idCategory: "2",
       strCategory: "Chicken",
       strCategoryThumb: "https://www.themealdb.com/images/category/chicken.png",
-     
     },
     {
       idCategory: "3",
       strCategory: "Dessert",
       strCategoryThumb: "https://www.themealdb.com/images/category/dessert.png",
-      
     },
     {
       idCategory: "4",
       strCategory: "Lamb",
       strCategoryThumb: "https://www.themealdb.com/images/category/lamb.png",
-      
     },
     {
       idCategory: "5",
       strCategory: "Miscellaneous",
       strCategoryThumb: "https://www.themealdb.com/images/category/miscellaneous.png",
-      
-      },
-      {
-        idCategory: "6",
-        strCategory: "Pasta",
-        strCategoryThumb: "https://www.themealdb.com/images/category/pasta.png",
-      },
-      {
-        idCategory: "7",
-        strCategory: "Pork",
-        strCategoryThumb: "https://www.themealdb.com/images/category/pork.png",
-      },
-      {
-        idCategory: "8",
-        strCategory: "Seafood",
-        strCategoryThumb: "https://www.themealdb.com/images/category/seafood.png",
-      },
-      {
-        idCategory: "9",
-        strCategory: "Side",
-        strCategoryThumb: "https://www.themealdb.com/images/category/side.png",
-      },
-      {
-        idCategory: "10",
-        strCategory: "Starter",
-        strCategoryThumb: "https://www.themealdb.com/images/category/starter.png",
-      },
-      {
-        idCategory: "11",
-        strCategory: "Vegan",
-        strCategoryThumb: "https://www.themealdb.com/images/category/vegan.png",
-      },
-      {
-        idCategory: "12",
-        strCategory: "Vegetarian",
-        strCategoryThumb: "https://www.themealdb.com/images/category/vegetarian.png",
-      },
-      {
-        idCategory: "13",
-        strCategory: "Breakfast",
-        strCategoryThumb: "https://www.themealdb.com/images/category/breakfast.png",
-      },
-      {
-        idCategory: "14",
-        strCategory: "Goat",
-        strCategoryThumb: "https://images.unsplash.com/photo-1619711667542-c049700dd9e0?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      
+    },
+    {
+      idCategory: "6",
+      strCategory: "Pasta",
+      strCategoryThumb: "https://www.themealdb.com/images/category/pasta.png",
+    },
+    {
+      idCategory: "7",
+      strCategory: "Pork",
+      strCategoryThumb: "https://www.themealdb.com/images/category/pork.png",
+    },
+    {
+      idCategory: "8",
+      strCategory: "Seafood",
+      strCategoryThumb: "https://www.themealdb.com/images/category/seafood.png",
+    },
+    {
+      idCategory: "9",
+      strCategory: "Side",
+      strCategoryThumb: "https://www.themealdb.com/images/category/side.png",
+    },
+    {
+      idCategory: "10",
+      strCategory: "Starter",
+      strCategoryThumb: "https://www.themealdb.com/images/category/starter.png",
+    },
+    {
+      idCategory: "11",
+      strCategory: "Vegan",
+      strCategoryThumb: "https://www.themealdb.com/images/category/vegan.png",
+    },
+    {
+      idCategory: "12",
+      strCategory: "Vegetarian",
+      strCategoryThumb: "https://www.themealdb.com/images/category/vegetarian.png",
+    },
+    {
+      idCategory: "13",
+      strCategory: "Breakfast",
+      strCategoryThumb: "https://www.themealdb.com/images/category/breakfast.png",
+    },
+    {
+      idCategory: "14",
+      strCategory: "Goat",
+      strCategoryThumb: "https://images.unsplash.com/photo-1619711667542-c049700dd9e0?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
   ]);
 
   // Keep all foods in state (unfiltered list)
-  const [allFood, setAllFood] = useState([
+  const [allFood] = useState([
     {
       category:'Beef',
       idFood:'1',
@@ -169,14 +162,12 @@ export default function HomeScreen() {
           measure: "pinch"
         }
       ],
-       
-
     },
     {
       category:'Beef',
       idFood:'2',
       idCategory: "1",
-      recipeInstructions: "Add'l ingredients: mayonnaise, siracha\r\n\r\n1\r\n\r\nPlace rice in a fine-mesh sieve and rinse until water runs clear. Add to a small pot with 1 cup water (2 cups for 4 servings) and a pinch of salt. Bring to a boil, then cover and reduce heat to low. Cook until rice is tender, 15 minutes. Keep covered off heat for at least 10 minutes or until ready to serve.\r\n\r\n2\r\n\r\nMeanwhile, wash and dry all produce. Peel and finely chop garlic. Zest and quarter lime (for 4 servings, zest 1 lime and quarter both). Trim and halve cucumber lengthwise; thinly slice crosswise into half-moons. Halve, peel, and medium dice onion. Trim, peel, and grate carrot.\r\n\r\n3\r\n\r\nIn a medium bowl, combine cucumber, juice from half the lime, ¼ tsp sugar (½ tsp for 4 servings), and a pinch of salt. In a small bowl, combine mayonnaise, a pinch of garlic, a squeeze of lime juice, and as much sriracha as you’d like. Season with salt and pepper.\r\n\r\n4\r\n\r\nHeat a drizzle of oil in a large pan over medium-high heat. Add onion and cook, stirring, until softened, 4-5 minutes. Add beef, remaining garlic, and 2 tsp sugar (4 tsp for 4 servings). Cook, breaking up meat into pieces, until beef is browned and cooked through, 4-5 minutes. Stir in soy sauce. Turn off heat; taste and season with salt and pepper.\r\n\r\n5\r\n\r\nFluff rice with a fork; stir in lime zest and 1 TBSP butter. Divide rice between bowls. Arrange beef, grated carrot, and pickled cucumber on top. Top with a squeeze of lime juice. Drizzle with sriracha mayo.",
+      recipeInstructions: "Add'l ingredients: mayonnaise, siracha\r\n\r\n1\r\n\r\nPlace rice in a fine-mesh sieve and rinse until water runs clear. Add to a small pot with 1 cup water (2 cups for 4 servings) and a pinch of salt. Bring to a boil, then cover and reduce heat to low. Cook until rice is tender, 15 minutes. Keep covered off heat for at least 10 minutes or until ready to serve.\r\n\r\n2\r\n\r\nMeanwhile, wash and dry all produce. Peel and finely chop garlic. Zest and quarter lime (for 4 servings, zest 1 lime and quarter both). Trim and halve cucumber lengthwise; thinly slice crosswise into half-moons. Halve, peel, and medium dice onion. Trim, peel, and grate carrot.\r\n\r\n3\r\n\r\nIn a medium bowl, combine cucumber, juice from half the lime, ¼ tsp sugar (½ tsp for 4 servings), and a pinch of salt. In a small bowl, combine mayonnaise, a pinch of garlic, a squeeze of lime juice, and as much sriracha as you'd like. Season with salt and pepper.\r\n\r\n4\r\n\r\nHeat a drizzle of oil in a large pan over medium-high heat. Add onion and cook, stirring, until softened, 4-5 minutes. Add beef, remaining garlic, and 2 tsp sugar (4 tsp for 4 servings). Cook, breaking up meat into pieces, until beef is browned and cooked through, 4-5 minutes. Stir in soy sauce. Turn off heat; taste and season with salt and pepper.\r\n\r\n5\r\n\r\nFluff rice with a fork; stir in lime zest and 1 TBSP butter. Divide rice between bowls. Arrange beef, grated carrot, and pickled cucumber on top. Top with a squeeze of lime juice. Drizzle with sriracha mayo.",
       recipeName: "Beef Banh Mi Bowls with Sriracha Mayo, Carrot & Pickled Cucumber",
       recipeImage: "https://images.unsplash.com/photo-1676300185292-e23bb3db50fa?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       recipeId: "beef_02",
@@ -291,14 +282,13 @@ export default function HomeScreen() {
           measure: "3 sprigs"
         }
       ],
-
     },
     {
       idCategory: "1",
       idFood:'4',
       category:'Beef',
       recipeName: "Beef Bourguignon",
-              recipeInstructions: "Heat a large casserole pan and add 1 tbsp goose fat. Season the beef and fry until golden brown, about 3-5 mins, then turn over and fry the other side until the meat is browned all over, adding more fat if necessary. Do this in 2-3 batches, transferring the meat to a colander set over a bowl when browned.\r\nIn the same pan, fry the bacon, shallots or pearl onions, mushrooms, garlic and bouquet garni until lightly browned. Mix in the tomato purée and cook for a few mins, stirring into the mixture. This enriches the bourguignon and makes a great base for the stew. Then return the beef and any drained juices to the pan and stir through.\r\nPour over the wine and about 100ml water so the meat bobs up from the liquid, but isn’t completely covered. Bring to the boil and use a spoon to scrape the caramelised cooking juices from the bottom of the pan – this will give the stew more flavour.\r\nHeat oven to 150C/fan 130C/gas 2. Make a cartouche: tear off a square of foil slightly larger than the casserole, arrange it in the pan so it covers the top of the stew and trim away any excess foil. Then cook for 3 hrs. If the sauce looks watery, remove the beef and veg with a slotted spoon, and set aside. Cook the sauce over a high heat for a few mins until the sauce has thickened a little, then return the beef and vegetables to the pan.\r\nTo make the celeriac mash, peel the celeriac and cut into cubes. Heat the olive oil in a large frying pan. Tip in the celeriac and fry for 5 mins until it turns golden. Season well with salt and pepper. Stir in the rosemary, thyme, bay and cardamom pods, then pour over 200ml water, enough to nearly cover the celeriac. Turn the heat to low, partially cover the pan and leave to simmer for 25-30 mins.\r\nAfter 25-30 mins, the celeriac should be soft and most of the water will have evaporated. Drain away any remaining water, then remove the herb sprigs, bay and cardamom pods. Lightly crush with a potato masher, then finish with a glug of olive oil and season to taste. Spoon the beef bourguignon into serving bowls and place a large spoonful of the celeriac mash on top. Garnish with one of the bay leaves, if you like.",
+      recipeInstructions: "Heat a large casserole pan and add 1 tbsp goose fat. Season the beef and fry until golden brown, about 3-5 mins, then turn over and fry the other side until the meat is browned all over, adding more fat if necessary. Do this in 2-3 batches, transferring the meat to a colander set over a bowl when browned.\r\nIn the same pan, fry the bacon, shallots or pearl onions, mushrooms, garlic and bouquet garni until lightly browned. Mix in the tomato purée and cook for a few mins, stirring into the mixture. This enriches the bourguignon and makes a great base for the stew. Then return the beef and any drained juices to the pan and stir through.\r\nPour over the wine and about 100ml water so the meat bobs up from the liquid, but isn't completely covered. Bring to the boil and use a spoon to scrape the caramelised cooking juices from the bottom of the pan – this will give the stew more flavour.\r\nHeat oven to 150C/fan 130C/gas 2. Make a cartouche: tear off a square of foil slightly larger than the casserole, arrange it in the pan so it covers the top of the stew and trim away any excess foil. Then cook for 3 hrs. If the sauce looks watery, remove the beef and veg with a slotted spoon, and set aside. Cook the sauce over a high heat for a few mins until the sauce has thickened a little, then return the beef and vegetables to the pan.\r\nTo make the celeriac mash, peel the celeriac and cut into cubes. Heat the olive oil in a large frying pan. Tip in the celeriac and fry for 5 mins until it turns golden. Season well with salt and pepper. Stir in the rosemary, thyme, bay and cardamom pods, then pour over 200ml water, enough to nearly cover the celeriac. Turn the heat to low, partially cover the pan and leave to simmer for 25-30 mins.\r\nAfter 25-30 mins, the celeriac should be soft and most of the water will have evaporated. Drain away any remaining water, then remove the herb sprigs, bay and cardamom pods. Lightly crush with a potato masher, then finish with a glug of olive oil and season to taste. Spoon the beef bourguignon into serving bowls and place a large spoonful of the celeriac mash on top. Garnish with one of the bay leaves, if you like.",
       recipeImage: "https://images.unsplash.com/photo-1548869206-93b036288d7e?q=80&w=1895&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       recipeId: "beef_04",
       alternateDrink: null,
@@ -356,7 +346,6 @@ export default function HomeScreen() {
           measure: "pinch"
         }
       ],
-
     },
     {
       idFood:'5',
@@ -412,8 +401,7 @@ export default function HomeScreen() {
           ingredientName: "Pepper",
           measure: "pinch"
         }
-      ],       
-        
+      ],
     },
     {
       idFood:'6',
@@ -470,8 +458,6 @@ export default function HomeScreen() {
           measure: "6 small"
         }
       ],
-      
-        
     },
     {
       idCategory: "2",
@@ -514,7 +500,6 @@ export default function HomeScreen() {
       recipeInstructions:"To make Chicken Alfredo, season 2 boneless, skinless chicken breasts with salt and pepper, then cook in a large skillet with 2 tablespoons of olive oil over medium heat until golden and cooked through, about 6-7 minutes per side. Remove the chicken, slice it, and set aside. In the same pan, melt 2 tablespoons of butter, add 3 minced garlic cloves, and sauté for 1 minute. Stir in 1 cup of heavy cream and bring to a simmer, then add 1 cup of grated Parmesan cheese, stirring until the sauce is smooth and thickened. Cook 300g of fettuccine pasta according to package instructions, drain, and toss it with the Alfredo sauce. Add the sliced chicken on top and garnish with parsley before serving.",
       category:'Chicken',
       recipeName: "Chicken Alfredo",
-
       recipeImage: "https://images.unsplash.com/photo-1645112411341-6c4fd023714a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       recipeId: "chicken_02",
       recipeCategory: "Chicken",
@@ -714,7 +699,7 @@ export default function HomeScreen() {
         testID="scrollContainer"
       >
         <View style={styles.headerContainer} testID="headerContainer">
-        <Image
+          <Image
             source={{uri:'https://cdn.pixabay.com/photo/2017/02/23/13/05/avatar-2092113_1280.png'}}
             style={styles.avatar}
           />
@@ -729,12 +714,19 @@ export default function HomeScreen() {
         </View>
 
         <View testID="categoryList">
-       
+          <Categories
+            categories={categories}
+            activeCategory={activeCategory}
+            handleChangeCategory={handleChangeCategory}
+          />
         </View>
 
         <View testID="foodList">
-
-          </View>
+          <FoodItems
+            foods={filteredfoods}
+            categories={categories}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -743,14 +735,14 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF", // white
+    backgroundColor: "#FFFFFF",
   },
   scrollContainer: {
     paddingBottom: 50,
-    paddingTop: hp(14), // pt-14 equivalent
+    paddingTop: hp(14),
   },
   headerContainer: {
-    marginHorizontal: wp(4), // mx-4 equivalent
+    marginHorizontal: wp(4),
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -763,29 +755,29 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     fontSize: hp(1.7),
-    color: "#52525B", // neutral-600
-    fontWeight: "600", // font-semibold
-    backgroundColor: "#F3F4F6", // gray-100
-    paddingHorizontal: wp(2), // px-2
-    paddingVertical: hp(0.5), // py-1
-    borderRadius: 9999, // full rounded
+    color: "#52525B",
+    fontWeight: "600",
+    backgroundColor: "#F3F4F6",
+    paddingHorizontal: wp(2),
+    paddingVertical: hp(0.5),
+    borderRadius: 9999,
     textAlign: "center",
   },
   titleContainer: {
-    marginHorizontal: wp(4), // mx-4
-    marginBottom: hp(2), // mb-2
+    marginHorizontal: wp(4),
+    marginBottom: hp(2),
   },
   title: {
     fontSize: hp(3.8),
-    fontWeight: "600", // font-semibold
-    color: "#52525B", // neutral-600
+    fontWeight: "600",
+    color: "#52525B",
   },
   subtitle: {
     fontSize: hp(3.8),
-    fontWeight: "600", // font-semibold
-    color: "#52525B", // neutral-600
+    fontWeight: "600",
+    color: "#52525B",
   },
   highlight: {
-    color: "#F59E0B", // amber-400
+    color: "#F59E0B",
   },
 });
